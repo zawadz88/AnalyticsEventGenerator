@@ -13,9 +13,3 @@ internal fun Task.readDocuments(inputFiles: FileCollection): List<Document> =
         }
         isValidFileExtension
     }.map { file: File -> Yaml.default.decodeFromString(Document.serializer(), file.readText()) }
-
-//internal fun Task.readDocuments(inputFiles: FileCollection): List<Document> =
-//    inputFiles.flatMap {
-//        it.listFiles { file -> file.extension == "yaml" }?.asList().orEmpty()
-//    }
-//        .map { file: File -> Yaml.default.decodeFromString(Document.serializer(), file.readText()) }

@@ -25,9 +25,6 @@ internal data class CodeGenerationParams(
 )
 
 internal fun generateCode(params: CodeGenerationParams, document: Document): List<FileSpec> {
-    // event value allowlist
-    // attribute value allowlist
-
     val files = document.events.map { event ->
         val eventName = params.prefix + event.name.toClassName()
         val classBuilder = TypeSpec.classBuilder(eventName)

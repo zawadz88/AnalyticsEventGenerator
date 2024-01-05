@@ -4,7 +4,6 @@ library = "0.1"
 
 kotlin = { strictly = "1.8.21" }
 
-androidAplication = "8.1.0"
 kotlinDsl = "4.0.14"
 
 kaml = { strictly = "0.54.0" }
@@ -26,8 +25,6 @@ kotlinpoet = { module = "com.squareup:kotlinpoet", version.ref = "kotlinPoet" }
 junit = { module = "junit:junit", version.ref = "junit" }
 
 [plugins]
-android-application = { id = "com.android.application", version.ref = "androidAplication" }
-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-dsl = { id = "org.gradle.kotlin.kotlin-dsl", version.ref = "kotlinDsl" }

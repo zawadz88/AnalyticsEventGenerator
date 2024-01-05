@@ -1,4 +1,6 @@
 import dev.zawadzki.analyticseventgenerator.plugin.AnalyticsExtension
+import dev.zawadzki.analyticseventgenerator.plugin.GenerateAnalyticsEventsTask
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     id("com.android.application")
@@ -6,21 +8,24 @@ plugins {
     id("dev.zawadzki.analyticseventgenerator")
 }
 
-the<AnalyticsExtension>().apply {
+val analyticsExtension = the<AnalyticsExtension>().apply {
     prefix.set("Sample")
     packageName.set("com.example.yamlplayground.event")
     inputFiles.setFrom(projectDir.resolve("src/eventDefinitions").listFiles())
     inputFiles.from(layout.projectDirectory.file("src/additionalEventDefinitions/sample.yaml"))
 }
 
+tasks.withType<KotlinCompile>()
+    .configureEach { dependsOn(tasks.withType<GenerateAnalyticsEventsTask>()) }
+
 android {
     namespace = "dev.zawadzki.analyticseventgenerator.sample.android"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "dev.zawadzki.analyticseventgenerator.sample.android"
         minSdk = 24
-        targetSdk = 33
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
@@ -30,7 +35,7 @@ android {
         }
     }
     sourceSets.getByName("main") {
-        java.srcDirs(buildDir.resolve("generated/source/events"))
+        java.srcDirs(analyticsExtension.outputDirectory)
     }
 
     buildTypes {
@@ -60,11 +65,11 @@ android {
 
 dependencies {
 
-    implementation("androidx.core:core-ktx:1.10.1")
+    implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.android.material:material:1.9.0")
+    implementation("com.google.android.material:material:1.11.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
-    implementation("androidx.activity:activity-compose:1.7.2")
+    implementation("androidx.activity:activity-compose:1.8.2")
     implementation(platform("androidx.compose:compose-bom:2023.03.00"))
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")

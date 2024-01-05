@@ -22,13 +22,13 @@ private const val LIBRARY_VERSION = "0.1"
 class AnalyticsPlugin : Plugin<Project> {
     override fun apply(project: Project) {
         val extension = project.extensions.create<AnalyticsExtension>("analyticsEvents")
-
         project.tasks.register<GenerateAnalyticsEventsTask>("generateAnalyticsEvents") {
             inputFiles.from(extension.inputFiles)
             outputDirectory.set(extension.outputDirectory)
             prefix.set(extension.prefix)
             packageName.set(extension.packageName)
         }
+
         project.dependencies {
             add(
                 JavaPlugin.IMPLEMENTATION_CONFIGURATION_NAME,
@@ -63,7 +63,7 @@ abstract class GenerateAnalyticsEventsTask : DefaultTask() {
 
     @TaskAction
     fun execute() {
-        logger.info(
+        logger.debug(
             """
             Generating analytics events with params:
             packageName: ${packageName.orNull}
@@ -75,12 +75,12 @@ abstract class GenerateAnalyticsEventsTask : DefaultTask() {
 
         val documents = readDocuments(inputFiles)
 
-        logger.info("Docs: $documents")
+        logger.debug("Docs: $documents")
 
         val generatedFileSpecs =
             documents.flatMap { doc -> generateCode(codeGenerationParams, doc) }
 
-        logger.info("generatedFileSpecs: $generatedFileSpecs")
+        logger.debug("generatedFileSpecs: $generatedFileSpecs")
 
         generatedFileSpecs.forEach { it.writeTo(outputDirectoryFile) }
     }

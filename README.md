@@ -9,15 +9,13 @@ and are Kotlin data classes with support for Kotlin Multiplatform.
 
 # TODOs
 
-- configure Sample app for Android
--- configure a dummy analytics service to send events on button clicks
--- define a duration extension
-- more unit tests for plugin
-- multi-platform support
-  -- https://medium.com/@aoriani/list/writing-swiftfriendly-kotlin-multiplatform-apis-c51c2b317fce
-  -- cross-platform sample app
+- sample apps
+  -- cross-platform sample app - Android, iOS, desktop, JS
   -- sample apps for when cross-platform library used 
-  -- default attribute support on iOS? 
+  -- default attribute support on iOS
+  -- configure a dummy analytics service to send events on button clicks
+  -- define a duration extension
+- more unit tests for plugin
 - configure Maven Central/Github Packages to publish Plugin + Runtime for both platforms
 - GithubActions/CI support
 - add an option to provide an allowlist for event/attribute names

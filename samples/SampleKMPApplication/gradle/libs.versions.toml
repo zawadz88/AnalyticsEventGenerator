@@ -1,0 +1,31 @@
+[versions]
+agp = "8.2.1"
+eventPlugin = "0.1"
+kotlin = "1.9.21"
+compose-compiler = "1.5.7"
+compose-bom = "2023.10.01"
+androidx-activityCompose = "1.8.2"
+junit4 = "4.13.2"
+
+[libraries]
+event-plugin = { module = "dev.zawadzki.analyticseventgenerator:gradle-plugin", version.ref = "eventPlugin" }
+event-runtime = { module = "dev.zawadzki.analyticseventgenerator:runtime", version.ref = "eventPlugin" }
+
+kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
+androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activityCompose" }
+compose-bom = { module = "androidx.compose:compose-bom", version.ref = "compose-bom"  }
+compose-ui = { module = "androidx.compose.ui:ui" }
+compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
+compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
+compose-foundation = { module = "androidx.compose.foundation:foundation" }
+compose-material3 = { module = "androidx.compose.material3:material3" }
+
+junit4 = { module = "junit:junit", version.ref = "junit4" }
+
+[plugins]
+androidApplication = { id = "com.android.application", version.ref = "agp" }
+androidLibrary = { id = "com.android.library", version.ref = "agp" }
+kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+
+eventGenerator = { id = "dev.zawadzki.analyticseventgenerator" }

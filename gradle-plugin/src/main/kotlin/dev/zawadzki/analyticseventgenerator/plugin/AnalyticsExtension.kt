@@ -20,7 +20,7 @@ open class AnalyticsExtension(project: Project) {
         prefix.set("")
         packageName.set("")
         outputDirectory.set(
-            project.buildDir
+            project.layout.buildDirectory.asFile.get()
                 .resolve(DEFAULT_DIRECTORY_GENERATED)
                 .resolve(DEFAULT_DIRECTORY_SOURCE)
                 .resolve(DEFAULT_DIRECTORY_EVENTS)

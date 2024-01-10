@@ -29,6 +29,7 @@ internal fun generateCode(params: CodeGenerationParams, document: Document): Lis
         val eventName = params.prefix + event.name.toClassName()
         val classBuilder = TypeSpec.classBuilder(eventName)
             .superclass(AbstractEvent::class)
+            .addModifiers(KModifier.DATA)
         val constructorBuilder = FunSpec.constructorBuilder()
 
         val attributesPropertyValues = mutableListOf<String>()

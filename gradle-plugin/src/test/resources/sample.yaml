@@ -34,6 +34,7 @@ events:
       click_count:
         type: Integer
         description: "number of clicks"
+        default: 3
       timestamp:
         type: Long
         description: "timestamp in millis"

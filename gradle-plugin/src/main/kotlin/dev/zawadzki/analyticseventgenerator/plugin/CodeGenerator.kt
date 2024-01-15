@@ -3,6 +3,7 @@ package dev.zawadzki.analyticseventgenerator.plugin
 import com.squareup.kotlinpoet.ANY
 import com.squareup.kotlinpoet.BOOLEAN
 import com.squareup.kotlinpoet.ClassName
+import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.DOUBLE
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.FunSpec
@@ -31,7 +32,6 @@ internal fun generateCode(params: CodeGenerationParams, document: Document): Lis
             .superclass(AbstractEvent::class)
             .addModifiers(KModifier.DATA)
         val constructorBuilder = FunSpec.constructorBuilder()
-
         val attributesPropertyValues = mutableListOf<String>()
 
         for (attribute in event.attributes) {
@@ -107,6 +107,37 @@ internal fun generateCode(params: CodeGenerationParams, document: Document): Lis
             }
         }
         classBuilder.primaryConstructor(constructorBuilder.build())
+        val primaryConstructorParameters = constructorBuilder.parameters
+        val allParamsSize = primaryConstructorParameters.size - 1
+        for (outerLoopIndex in allParamsSize downTo 0) {
+            val topCheckedParamSpec = primaryConstructorParameters[outerLoopIndex]
+            if (topCheckedParamSpec.defaultValue != null) {
+                val secondaryConstructor = FunSpec.constructorBuilder()
+                val thisConstructorCodeBlocks = mutableListOf<CodeBlock>()
+                for (innerLoopIndex in 0 .. allParamsSize) {
+                    val secondaryParamSpec = primaryConstructorParameters[innerLoopIndex]
+                    val defaultValueCodeBlock = secondaryParamSpec.defaultValue
+                    if (defaultValueCodeBlock != null) {
+                        if (innerLoopIndex < outerLoopIndex) {
+                            val secondaryParamSpecBuilder = secondaryParamSpec.toBuilder()
+                            secondaryParamSpecBuilder.defaultValue(null)
+                            secondaryConstructor.addParameter(secondaryParamSpecBuilder.build())
+                            val paramBlock = CodeBlock.builder().add(secondaryParamSpec.name).build()
+                            thisConstructorCodeBlocks.add(paramBlock)
+                        } else {
+                            thisConstructorCodeBlocks.add(defaultValueCodeBlock)
+                        }
+                    } else {
+                        secondaryConstructor.addParameter(secondaryParamSpec)
+                        val paramBlock = CodeBlock.builder().add(secondaryParamSpec.name).build()
+                        thisConstructorCodeBlocks.add(paramBlock)
+                    }
+                }
+                secondaryConstructor.callThisConstructor(thisConstructorCodeBlocks)
+                classBuilder.addFunction(secondaryConstructor.build())
+            }
+        }
+
         classBuilder.addProperty(
             PropertySpec.builder(
                 "attributes",

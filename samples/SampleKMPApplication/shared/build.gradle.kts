@@ -46,6 +46,8 @@ kotlin {
         }
         commonMain.dependencies {
             implementation(libs.event.runtime)
+            implementation(libs.kotlinx.datetime)
+            implementation(libs.kotlinx.coroutines)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

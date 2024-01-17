@@ -21,6 +21,7 @@ class Greeting {
         val sampleAdditionalButtonTapped = SampleAdditionalButtonTapped(
             buttonId = "buttonId2"
         )
+
         return """Hello, ${platform.name}!
             | $sampleSomethingEvent
             | $sampleButtonTapped

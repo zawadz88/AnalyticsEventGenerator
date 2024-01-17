@@ -11,12 +11,12 @@ and are Kotlin data classes with support for Kotlin Multiplatform.
 
 - sample apps
   -- cross-platform sample app - Android, iOS, desktop, JS
-  -- sample apps for when cross-platform library used
+  -- separate sample apps for when cross-platform library used - Android, iOS, JS
   -- configure a dummy analytics service to send events on button clicks
-  -- define a duration extension
 - more unit tests for plugin, especially code generation
 - clean up CodeGenerator
-- configure Maven Central/Github Packages to publish Plugin + Runtime for both platforms
+- configure Maven Central/Github Packages to publish Plugin + Runtime for all platforms
+- add info in README how to run locally
 - GithubActions/CI support
 - add an option to provide an allowlist for event/attribute names
 

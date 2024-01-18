@@ -29,6 +29,20 @@ kotlin {
         }
     }
 
+    jvm("desktop")
+    @Suppress("OPT_IN_USAGE")
+    wasmJs {
+        moduleName = "shared"
+        browser {
+            commonWebpackConfig {
+                outputFileName = "shared.js"
+            }
+        }
+    }
+    js {
+        browser()
+    }
+
     listOf(
         iosX64(),
         iosArm64(),
@@ -52,13 +66,16 @@ kotlin {
         commonTest.dependencies {
             implementation(libs.kotlin.test)
         }
+        jsMain.configure {
+            kotlin.srcDirs("src/wasmJsMain/kotlin")
+        }
     }
 }
 
 android {
     namespace = "dev.zawadzki.samplekmpapplication"
-    compileSdk = 34
+    compileSdk = libs.versions.android.compileSdk.get().toInt()
     defaultConfig {
-        minSdk = 24
+        minSdk = libs.versions.android.minSdk.get().toInt()
     }
 }

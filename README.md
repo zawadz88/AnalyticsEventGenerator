@@ -10,9 +10,10 @@ and are Kotlin data classes with support for Kotlin Multiplatform.
 # TODOs
 
 - sample apps
-  -- cross-platform sample app - Android, iOS, desktop, JS
-  -- separate sample apps for when cross-platform library used - Android, iOS, JS
-  -- configure a dummy analytics service to send events on button clicks
+  -- cross-platform sample app - add JS Browser example
+  -- check if secondary constructors will work in JS - https://kotlinlang.org/docs/js-to-kotlin-interop.html#jsname-annotation
+  -- separate sample apps for when cross-platform library used - Android, iOS, JS Browser
+  -- configure a dummy analytics service to send events on button clicks in the samples
 - more unit tests for plugin, especially code generation
 - clean up CodeGenerator
 - configure Maven Central/Github Packages to publish Plugin + Runtime for all platforms

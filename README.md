@@ -10,9 +10,8 @@ and are Kotlin data classes with support for Kotlin Multiplatform.
 # TODOs
 
 - sample apps
-  -- cross-platform sample app - add JS Browser example
-  -- check if secondary constructors will work in JS - https://kotlinlang.org/docs/js-to-kotlin-interop.html#jsname-annotation
-  -- separate sample apps for when cross-platform library used - Android, iOS, JS Browser
+  -- cross-platform sample app - add React + TypeScript example
+  -- separate sample apps for when cross-platform library used - Android, iOS, React
   -- configure a dummy analytics service to send events on button clicks in the samples
 - more unit tests for plugin, especially code generation
 - clean up CodeGenerator
@@ -20,4 +19,3 @@ and are Kotlin data classes with support for Kotlin Multiplatform.
 - add info in README how to run locally
 - GithubActions/CI support
 - add an option to provide an allowlist for event/attribute names
-

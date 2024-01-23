@@ -1,6 +1,7 @@
 package dev.zawadzki.analyticseventgenerator.plugin
 
 import com.squareup.kotlinpoet.ANY
+import com.squareup.kotlinpoet.AnnotationSpec
 import com.squareup.kotlinpoet.BOOLEAN
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.CodeBlock
@@ -24,6 +25,16 @@ internal data class CodeGenerationParams(
     val prefix: String,
     val packageName: String
 )
+
+private val jsExportClassName by lazy { ClassName("kotlin.js", "JsExport") }
+
+private val jsNameClassName by lazy { ClassName("kotlin.js", "JsName") }
+
+private val jsExportIgnoreClassName by lazy { ClassName("kotlin.js", "JsExport", "Ignore") }
+
+private val optInClassName by lazy { ClassName("kotlin", "OptIn") }
+
+private val experimentalJsExportClassName by lazy { ClassName("kotlin.js", "ExperimentalJsExport") }
 
 internal fun generateCode(params: CodeGenerationParams, document: Document): List<FileSpec> {
     val files = document.events.map { event ->
@@ -81,6 +92,13 @@ internal fun generateCode(params: CodeGenerationParams, document: Document): Lis
                         )
                     }
                 }
+                if (attribute.type == Type.Primitive.LONG || attribute.type == Type.Primitive.NULLABLE_LONG) {
+                    parameterBuilder.addAnnotation(
+                        AnnotationSpec.builder(Suppress::class)
+                            .addMember("%S", "NON_EXPORTABLE_TYPE")
+                            .build()
+                    )
+                }
                 constructorBuilder.addParameter(parameterBuilder.build())
                 classBuilder.addProperty(
                     PropertySpec.builder(attributeNameAsProperty, poetTypeName)
@@ -114,7 +132,14 @@ internal fun generateCode(params: CodeGenerationParams, document: Document): Lis
             if (topCheckedParamSpec.defaultValue != null) {
                 val secondaryConstructor = FunSpec.constructorBuilder()
                 val thisConstructorCodeBlocks = mutableListOf<CodeBlock>()
-                for (innerLoopIndex in 0 .. allParamsSize) {
+                // secondary constructors need a different name in JS:
+                // https://kotlinlang.org/docs/js-to-kotlin-interop.html#jsname-annotation
+                secondaryConstructor.addAnnotation(
+                    AnnotationSpec.builder(jsNameClassName)
+                        .addMember("%S", "init$outerLoopIndex")
+                        .build()
+                )
+                for (innerLoopIndex in 0..allParamsSize) {
                     val secondaryParamSpec = primaryConstructorParameters[innerLoopIndex]
                     val defaultValueCodeBlock = secondaryParamSpec.defaultValue
                     if (defaultValueCodeBlock != null) {
@@ -122,7 +147,8 @@ internal fun generateCode(params: CodeGenerationParams, document: Document): Lis
                             val secondaryParamSpecBuilder = secondaryParamSpec.toBuilder()
                             secondaryParamSpecBuilder.defaultValue(null)
                             secondaryConstructor.addParameter(secondaryParamSpecBuilder.build())
-                            val paramBlock = CodeBlock.builder().add(secondaryParamSpec.name).build()
+                            val paramBlock =
+                                CodeBlock.builder().add(secondaryParamSpec.name).build()
                             thisConstructorCodeBlocks.add(paramBlock)
                         } else {
                             thisConstructorCodeBlocks.add(defaultValueCodeBlock)
@@ -153,7 +179,8 @@ internal fun generateCode(params: CodeGenerationParams, document: Document): Lis
                     addStatement("  $statement,")
                 }
                 add(")")
-            }).build()
+            }).addAnnotation(jsExportIgnoreClassName)
+                .build()
         )
         classBuilder.addProperty(
             PropertySpec.builder(
@@ -161,6 +188,12 @@ internal fun generateCode(params: CodeGenerationParams, document: Document): Lis
                 String::class,
                 KModifier.OVERRIDE
             ).initializer("%S", event.value).build()
+        )
+        classBuilder.addAnnotation(jsExportClassName)
+        classBuilder.addAnnotation(
+            AnnotationSpec.builder(optInClassName)
+                .addMember("%T::class", experimentalJsExportClassName)
+                .build()
         )
 
         FileSpec.builder(params.packageName, eventName)

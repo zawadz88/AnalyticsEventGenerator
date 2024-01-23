@@ -2,7 +2,7 @@
 # Also update in AnalyticsPlugin.kt
 library = "0.1"
 
-kotlin = { strictly = "1.9.20" }
+kotlin = { strictly = "1.9.21" }
 
 kotlinDsl = "4.2.1"
 

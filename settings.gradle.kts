@@ -14,6 +14,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Analytics Event Generator"
+rootProject.name = "AnalyticsEventGenerator"
 include(":gradle-plugin")
 include(":runtime")

@@ -21,10 +21,18 @@ kotlin {
     tvosSimulatorArm64()
     tvosX64()
 
-    js {
+    js(IR) {
         browser()
         nodejs()
+        binaries.library()
+        generateTypeScriptDefinitions()
     }
-    @Suppress("OPT_IN_USAGE")
-    wasmJs()
+
+    sourceSets {
+        all {
+            languageSettings.apply {
+                optIn("kotlin.js.ExperimentalJsExport")
+            }
+        }
+    }
 }

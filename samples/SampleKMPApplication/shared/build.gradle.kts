@@ -30,17 +30,10 @@ kotlin {
     }
 
     jvm("desktop")
-    @Suppress("OPT_IN_USAGE")
-    wasmJs {
-        moduleName = "shared"
-        browser {
-            commonWebpackConfig {
-                outputFileName = "shared.js"
-            }
-        }
-    }
     js {
         browser()
+        binaries.library()
+        generateTypeScriptDefinitions()
     }
 
     listOf(
@@ -65,9 +58,6 @@ kotlin {
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
-        }
-        jsMain.configure {
-            kotlin.srcDirs("src/wasmJsMain/kotlin")
         }
     }
 }

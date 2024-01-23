@@ -27,6 +27,7 @@ dependencies {
     implementation(libs.kaml)
     implementation(libs.kotlinx.serialization)
     implementation(libs.kotlinpoet)
+    implementation(libs.kotlin.stdlib)
     implementation(project(":runtime"))
 
     testImplementation(libs.junit)

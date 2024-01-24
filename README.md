@@ -9,12 +9,12 @@ and are Kotlin data classes with support for Kotlin Multiplatform.
 
 # TODOs
 
+- configure Maven Central/Github Packages to publish Plugin + Runtime for all platforms
 - sample apps
   -- sample with separate native apps using cross-platform library published to Github Packages for Android, iOS & Web (React + TypeScript)
   -- configure a dummy analytics service to send events on button clicks in the samples
-- more unit tests for plugin, especially code generation
 - clean up CodeGenerator
-- configure Maven Central/Github Packages to publish Plugin + Runtime for all platforms
+- more unit tests for plugin, especially code generation
 - add info in README how to run locally
 - GithubActions/CI support
 - add an option to provide an allowlist for event/attribute names

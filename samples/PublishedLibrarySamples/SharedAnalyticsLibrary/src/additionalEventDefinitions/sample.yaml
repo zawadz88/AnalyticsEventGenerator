@@ -1,0 +1,16 @@
+events:
+  AdditionalButtonTapped:
+    value: "button_tapped"
+    description: "I'm a 2nd button tap event"
+    attributes:
+      buttonId:
+        type: String
+        description: "unique identifier of the button"
+  ActionWithTimer:
+    value: "action_with_timer"
+    description: "Lorem ipsum"
+    attributes:
+      duration:
+        type: Long
+        description: "duration in millis"
+        mutable: True

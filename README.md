@@ -10,8 +10,7 @@ and are Kotlin data classes with support for Kotlin Multiplatform.
 # TODOs
 
 - sample apps
-  -- cross-platform sample app - add React + TypeScript example
-  -- separate sample apps for when cross-platform library used - Android, iOS, React
+  -- sample with separate native apps using cross-platform library published to Github Packages for Android, iOS & Web (React + TypeScript)
   -- configure a dummy analytics service to send events on button clicks in the samples
 - more unit tests for plugin, especially code generation
 - clean up CodeGenerator

@@ -7,18 +7,18 @@ import org.jetbrains.kotlin.gradle.tasks.AbstractKotlinNativeCompile
 group = "dev.zawadzki.sharedanalyticslibrary"
 version = libs.versions.sharedAnalyticsLibrary.get()
 
-// TODO: use the one from Maven Central + add info how to develop locally
-buildscript {
-    dependencies {
-        classpath(libs.event.plugin)
-    }
-}
+// TODO: add info how to develop locally
+//buildscript {
+//    dependencies {
+//        classpath(libs.event.plugin)
+//    }
+//}
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.eventGenerator)
     `maven-publish`
-    // TODO: configure publishing for Maven multiplatform, Cocoapods and NPM
+    // TODO: configure publishing for Cocoapods and NPM
 }
 
 val analyticsExtension = the<AnalyticsExtension>().apply {
@@ -28,11 +28,12 @@ val analyticsExtension = the<AnalyticsExtension>().apply {
     inputFiles.from(layout.projectDirectory.file("src/additionalEventDefinitions/sample.yaml"))
 }
 
-tasks.matching { it is AbstractKotlinCompile<*> || it is AbstractKotlinNativeCompile<*, *> }
+tasks.matching { it is AbstractKotlinCompile<*> || it is AbstractKotlinNativeCompile<*, *> || it.name.endsWith("SourcesJar", ignoreCase = true) }
     .configureEach { dependsOn(tasks.withType<GenerateAnalyticsEventsTask>()) }
 
 kotlin {
     androidTarget {
+        publishLibraryVariants("release")
         compilations.all {
             kotlinOptions {
                 jvmTarget = JvmTarget.JVM_1_8.target
@@ -76,5 +77,18 @@ android {
     compileSdk = libs.versions.android.compileSdk.get().toInt()
     defaultConfig {
         minSdk = libs.versions.android.minSdk.get().toInt()
+    }
+}
+
+val publishingRepository: String? by project
+publishingRepository?.let {
+    publishing {
+        repositories {
+            maven {
+                name = "publishing"
+                url = uri("https://maven.pkg.github.com/$it")
+                credentials(PasswordCredentials::class)
+            }
+        }
     }
 }

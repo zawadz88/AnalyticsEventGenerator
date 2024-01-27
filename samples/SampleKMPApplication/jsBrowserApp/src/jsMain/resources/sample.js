@@ -11,3 +11,5 @@ rootElement.innerHTML = "<div>" + jsBrowserApp.getGreeting() + "</div>"
     + "<div> eventWithDefaults: " + eventWithDefaults.toString() + "</div>"
     + "<div> secondEventWithDefaults: " + secondEventWithDefaults.toString() + "</div>"
     + "<div> eventWithEnum: " + eventWithEnum.toString() + "</div>";
+
+jsBrowserApp.dev.zawadzki.samplekmpapplication.executeAction();

@@ -7,8 +7,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
+import kotlin.js.ExperimentalJsExport
+import kotlin.js.JsExport
 import kotlin.reflect.KMutableProperty0
 
+@ExperimentalJsExport
+@JsExport
 fun executeAction() {
     val eventWithTimer = SampleActionWithTimer(duration = 0)
     CoroutineScope(Dispatchers.Main).launch {

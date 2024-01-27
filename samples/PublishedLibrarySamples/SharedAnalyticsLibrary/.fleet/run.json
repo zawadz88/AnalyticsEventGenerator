@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "gradle",
+            "name": "Gradle clean",
+            "tasks": [ "clean" ],
+        },
+        {
+            "type": "gradle",
+            "name": "Gradle assemble",
+            "tasks": [ "assemble" ],
+        }
+    ]
+}

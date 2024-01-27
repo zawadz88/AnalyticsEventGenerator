@@ -3,18 +3,19 @@ pluginManagement {
         google()
         mavenCentral()
         gradlePluginPortal()
-        mavenLocal()
     }
 }
 dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
         google()
         mavenCentral()
-        mavenLocal()
+        maven {
+            setUrl("https://maven.pkg.github.com/zawadz88/AnalyticsEventGenerator")
+            name = "github"
+            credentials(PasswordCredentials::class)
+        }
     }
 }
 
-rootProject.name = "SampleAndroidApplication"
+rootProject.name = "SampleAndroidApp"
 include(":app")
- 

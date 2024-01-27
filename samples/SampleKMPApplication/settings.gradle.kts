@@ -19,7 +19,6 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "SampleKMPApplication"
-include(":androidApp")
 include(":composeApp")
 include(":jsBrowserApp")
 include(":shared")

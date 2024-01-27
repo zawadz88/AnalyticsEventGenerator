@@ -1,8 +1,9 @@
 package com.example.yamlplayground
 
-import com.example.yamlplayground.event.SampleAdditionalButtonTapped
-import com.example.yamlplayground.event.SampleButtonTapped
-import com.example.yamlplayground.event.SampleSomething
+import dev.zawadzki.sharedanalyticslibrary.event.SampleAdditionalButtonTapped
+import dev.zawadzki.sharedanalyticslibrary.event.SampleButtonTapped
+import dev.zawadzki.sharedanalyticslibrary.event.SampleSomething
+
 
 class Sample {
 

@@ -10,11 +10,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.YAMLPlayground"
+        tools:ignore="DataExtractionRules"
         tools:targetApi="31">
         <activity
             android:name="com.example.yamlplayground.MainActivity"
             android:exported="true"
-            android:label="@string/title_activity_main"
             android:theme="@style/Theme.YAMLPlayground">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

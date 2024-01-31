@@ -1,0 +1,18 @@
+{
+    "configurations": [
+        {
+            "type": "npm",
+            "name": "webpack build",
+            "command": "run",
+            "packageManagerKind": "yarn",
+            "scripts": "build"
+        },
+        {
+            "type": "npm",
+            "name": "webpack serve",
+            "command": "run",
+            "packageManagerKind": "yarn",
+            "scripts": "dev"
+        }
+    ]
+}

@@ -3,7 +3,11 @@ package dev.zawadzki.sharedanalyticslibrary
 import dev.zawadzki.sharedanalyticslibrary.event.SampleAdditionalButtonTapped
 import dev.zawadzki.sharedanalyticslibrary.event.SampleButtonTapped
 import dev.zawadzki.sharedanalyticslibrary.event.SampleSomething
+import kotlin.js.ExperimentalJsExport
+import kotlin.js.JsExport
 
+@ExperimentalJsExport
+@JsExport
 class Greeting {
     private val platform: Platform = getPlatform()
 

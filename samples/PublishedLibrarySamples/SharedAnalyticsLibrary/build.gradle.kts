@@ -14,6 +14,7 @@ version = libs.versions.sharedAnalyticsLibrary.get()
 //    }
 //}
 plugins {
+    alias(libs.plugins.npmPublish)
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.eventGenerator)
@@ -28,7 +29,12 @@ val analyticsExtension = the<AnalyticsExtension>().apply {
     inputFiles.from(layout.projectDirectory.file("src/additionalEventDefinitions/sample.yaml"))
 }
 
-tasks.matching { it is AbstractKotlinCompile<*> || it is AbstractKotlinNativeCompile<*, *> || it.name.endsWith("SourcesJar", ignoreCase = true) }
+tasks.matching {
+    it is AbstractKotlinCompile<*> || it is AbstractKotlinNativeCompile<*, *> || it.name.endsWith(
+        "SourcesJar",
+        ignoreCase = true
+    )
+}
     .configureEach { dependsOn(tasks.withType<GenerateAnalyticsEventsTask>()) }
 
 kotlin {
@@ -90,5 +96,26 @@ publishingRepository?.let {
                 credentials(PasswordCredentials::class)
             }
         }
+    }
+}
+
+npmPublish {
+    organization.set("zawadz88")
+    packages {
+        named("js") {
+            packageJson {
+                author {
+                    name.set("Piotr Zawadzki")
+                }
+                repository {
+                    type.set("git")
+                    url.set("https://github.com/zawadz88/AnalyticsEventGenerator.git")
+                }
+            }
+        }
+    }
+    registries {
+        // pass Github token via -Pnpm.publish.registry.github.authToken=XXX
+        github {}
     }
 }

@@ -9,6 +9,11 @@
             "type": "gradle",
             "name": "Gradle assemble",
             "tasks": [ "assemble" ],
+        },
+        {
+            "type": "gradle",
+            "name": "Gradle podInstall",
+            "tasks": [ "podInstall" ],
         }
     ]
 }

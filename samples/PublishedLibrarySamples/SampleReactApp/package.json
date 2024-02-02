@@ -27,7 +27,7 @@
   "dependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "shared-analytics-library": "file:./../SharedAnalyticsLibrary/build/dist/js/productionLibrary"
+    "shared-analytics-library": "npm:@zawadz88/shared-analytics-library@1.0.0"
   },
   "scripts": {
     "build": "webpack build --mode production",

@@ -16,6 +16,7 @@ version = libs.versions.sharedAnalyticsLibrary.get()
 plugins {
     alias(libs.plugins.npmPublish)
     alias(libs.plugins.kotlinMultiplatform)
+    alias(libs.plugins.kotlinCocoapods)
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.eventGenerator)
     `maven-publish`
@@ -52,13 +53,17 @@ kotlin {
         generateTypeScriptDefinitions()
     }
 
-    listOf(
-        iosX64(),
-        iosArm64(),
-        iosSimulatorArm64()
-    ).forEach {
-        it.binaries.framework {
-            baseName = "shared"
+    iosX64()
+    iosArm64()
+    iosSimulatorArm64()
+
+    cocoapods {
+        summary = "An example of using a shared library for analytics"
+        homepage = "https://github.com/zawadz88/AnalyticsEventGenerator"
+        version = "1.0.0"
+        ios.deploymentTarget = "16.0"
+        framework {
+            baseName = "SharedAnalyticsLibrary"
             isStatic = true
         }
     }

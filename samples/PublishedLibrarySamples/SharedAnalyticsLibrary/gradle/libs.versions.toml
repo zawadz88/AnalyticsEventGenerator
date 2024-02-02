@@ -28,6 +28,7 @@ junit4 = { module = "junit:junit", version.ref = "junit4" }
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
 kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+kotlinCocoapods = { id = "org.jetbrains.kotlin.native.cocoapods", version.ref = "kotlin" }
 npmPublish = { id = "dev.petuska.npm.publish", version.ref = "npmPublish" }
 
 eventGenerator = { id = "dev.zawadzki.analyticseventgenerator", version.ref = "eventPlugin" }

@@ -4286,8 +4286,10 @@ shallow-clone@^3.0.0:
   dependencies:
     kind-of "^6.0.2"
 
-"shared-analytics-library@file:../SharedAnalyticsLibrary/build/dist/js/productionLibrary":
+"shared-analytics-library@npm:@zawadz88/shared-analytics-library@1.0.0":
   version "1.0.0"
+  resolved "https://npm.pkg.github.com/download/@zawadz88/shared-analytics-library/1.0.0/02f655bd941f2801723589ce03a7c27fa9c4ab64#02f655bd941f2801723589ce03a7c27fa9c4ab64"
+  integrity sha512-OBmA2eV+1rL2LzcTR8SLCpoXx5rga16L3E2haKAOVj2UJDfLAhYJ3WEFDWT/Swnbpq39IiQGzGsBrEwaYj3s/g==
   dependencies:
     "@js-joda/core" "3.2.0"
     format-util "^1.0.5"

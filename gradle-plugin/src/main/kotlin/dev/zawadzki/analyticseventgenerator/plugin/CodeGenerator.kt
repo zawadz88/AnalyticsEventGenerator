@@ -106,7 +106,13 @@ internal fun generateCode(params: CodeGenerationParams, document: Document): Lis
                         .mutable(attribute.mutable)
                         .build()
                 )
-                attributesPropertyValues.add("\"$attributeName\" to $attributeNameAsProperty")
+                attributesPropertyValues.add(
+                    "\"$attributeName\" to ${
+                        type.formatAttributeNameForAttributesMap(
+                            attribute
+                        )
+                    }"
+                )
             } else {
                 val fixedValue = attribute.fixed.requireValue()
                 if (fixedValue == null) {
@@ -118,7 +124,7 @@ internal fun generateCode(params: CodeGenerationParams, document: Document): Lis
                 } else {
                     attributesPropertyValues.add(
                         "\"$attributeName\" to ${
-                            type.formatValueForCodeInsertion(attribute, fixedValue)
+                            type.formatValueForAttributesMap(attribute, fixedValue)
                         }"
                     )
                 }
@@ -172,14 +178,18 @@ internal fun generateCode(params: CodeGenerationParams, document: Document): Lis
                     ANY.copy(nullable = true)
                 ),
                 KModifier.OVERRIDE
-            ).initializer(codeBlock = buildCodeBlock {
-                addStatement("mapOf<String, Any?>(")
-
-                attributesPropertyValues.forEach { statement ->
-                    addStatement("  $statement,")
-                }
-                add(")")
-            }).addAnnotation(jsExportIgnoreClassName)
+            ).getter(
+                FunSpec.getterBuilder()
+                    .addCode(buildCodeBlock {
+                        add("return")
+                        addStatement(" mapOf<String, Any?>(")
+                        attributesPropertyValues.forEach { statement ->
+                            addStatement("  $statement,")
+                        }
+                        add(")")
+                    }).build()
+            )
+                .addAnnotation(jsExportIgnoreClassName)
                 .build()
         )
         classBuilder.addProperty(

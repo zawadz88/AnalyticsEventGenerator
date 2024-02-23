@@ -16,12 +16,9 @@ kotlin {
             }
         }
     }
-    
-    jvm("desktop")
-    
+    jvm()
+
     sourceSets {
-        val desktopMain by getting
-        
         androidMain.dependencies {
             implementation(libs.compose.ui.tooling.preview)
             implementation(libs.androidx.activity.compose)
@@ -35,8 +32,14 @@ kotlin {
             implementation(compose.components.resources)
             implementation(projects.shared)
         }
-        desktopMain.dependencies {
+        jvmMain.dependencies {
             implementation(compose.desktop.currentOs)
+        }
+
+        all {
+            languageSettings.apply {
+                optIn("kotlin.js.ExperimentalJsExport")
+            }
         }
     }
 }

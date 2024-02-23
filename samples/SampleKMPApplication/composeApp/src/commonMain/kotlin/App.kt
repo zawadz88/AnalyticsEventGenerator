@@ -1,45 +1,39 @@
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import dev.zawadzki.samplekmpapplication.Greeting
-import dev.zawadzki.samplekmpapplication.executeAction
-import org.jetbrains.compose.resources.ExperimentalResourceApi
-import org.jetbrains.compose.resources.painterResource
+import dev.zawadzki.samplekmpapplication.di.eventReportingRepository
+import dev.zawadzki.samplekmpapplication.event.SampleActionWithTimer
+import dev.zawadzki.samplekmpapplication.event.SampleSomething
 
-@OptIn(ExperimentalResourceApi::class)
 @Composable
 fun App() {
     MaterialTheme {
-        var showContent by remember { mutableStateOf(false) }
-        val greeting = remember { Greeting().greet() }
         Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
-            Button(onClick = { showContent = !showContent }) {
-                Text("Click me!")
+            Button(onClick = {
+                val sampleEvent = SampleSomething(
+                    isEnabled = true,
+                    clickCount = 1,
+                    duration = 2000L,
+                    accuracy = 0.5,
+                    myType = SampleSomething.MyType.CUSTOM
+                )
+                eventReportingRepository.reportEvent(sampleEvent)
+            }) {
+                Text("Send sample event")
             }
-            AnimatedVisibility(showContent) {
-                Column(
-                    Modifier.fillMaxWidth(),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Image(painterResource("compose-multiplatform.xml"), null)
-                    Text("Compose: $greeting")
-                }
+            Button(onClick = {
+                val eventWithTimer = SampleActionWithTimer(duration = 0)
+                eventWithTimer.duration = 2500L
+                eventReportingRepository.reportEvent(eventWithTimer)
+            }) {
+                Text("Send event with duration")
             }
-        }
-        LaunchedEffect(true) {
-            executeAction()
         }
     }
+
 }

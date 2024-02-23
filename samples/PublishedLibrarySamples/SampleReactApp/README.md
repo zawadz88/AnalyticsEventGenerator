@@ -1,6 +1,6 @@
 ## Sample React App
 In order to build the package you need to make sure that you authenticate to Github Packages 
-in case it's a private repository: https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-npm-registry#installing-a-package
+in case it's a private repository: https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-npm-registry#authenticating-with-a-personal-access-token
 
 Using local version of shared-analytics-library:
 - in SampleReactApp run `yarn remove shared-analytics-library` to remove the one distributed via Github Packages

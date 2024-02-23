@@ -20,7 +20,7 @@ plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.eventGenerator)
     `maven-publish`
-    // TODO: configure publishing for Cocoapods and NPM
+    // TODO: configure publishing for Cocoapods to Github
 }
 
 val analyticsExtension = the<AnalyticsExtension>().apply {
@@ -60,7 +60,7 @@ kotlin {
     cocoapods {
         summary = "An example of using a shared library for analytics"
         homepage = "https://github.com/zawadz88/AnalyticsEventGenerator"
-        version = "1.0.0"
+        version = libs.versions.sharedAnalyticsLibrary.get()
         ios.deploymentTarget = "16.0"
         framework {
             baseName = "SharedAnalyticsLibrary"

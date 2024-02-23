@@ -1,20 +1,33 @@
 import SwiftUI
-import shared
+import Shared
 
 struct ContentView: View {
-	let event = SampleAdditionalButtonTapped(buttonId: "xxx")
-	let eventWithDefaultArgs = SampleButtonTapped(buttonId: "buttonId1", someOptional: nil)
-	let greet = Greeting().greet()
 
-	let action = ActionKt.executeAction()
-
-	var body: some View {
-		Text(greet + "\n\n " + event.description() + "\n\n" + eventWithDefaultArgs.description())
-	}
+    var body: some View {
+        VStack(spacing: 16) {
+            Button("Send sample event") {
+                let sampleEvent = SampleSomething(
+                    isEnabled: true,
+                    clickCount: 1,
+                    duration: 2000,
+                    accuracy: 0.5,
+                    myType: SampleSomething.MyType.custom
+                )
+                ServiceLocatorKt.eventReportingRepository.reportEvent(event: sampleEvent)
+            }
+            Button("Send event with duration") {
+                let eventWithTimer = SampleActionWithTimer(duration: 0)
+                eventWithTimer.duration = 2500
+                ServiceLocatorKt.eventReportingRepository.reportEvent(event: eventWithTimer)
+            }
+        }
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+                .padding()
+    }
 }
 
 struct ContentView_Previews: PreviewProvider {
-	static var previews: some View {
-		ContentView()
-	}
+    static var previews: some View {
+        ContentView()
+    }
 }

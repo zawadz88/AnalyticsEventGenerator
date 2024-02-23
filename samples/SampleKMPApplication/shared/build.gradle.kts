@@ -7,6 +7,7 @@ import org.jetbrains.kotlin.gradle.tasks.AbstractKotlinNativeCompile
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
+    alias(libs.plugins.kotlinx.serialization)
     id(libs.plugins.eventGenerator.get().pluginId)
 }
 
@@ -29,7 +30,7 @@ kotlin {
         }
     }
 
-    jvm("desktop")
+    jvm()
     js {
         browser()
         binaries.library()
@@ -42,7 +43,7 @@ kotlin {
         iosSimulatorArm64()
     ).forEach {
         it.binaries.framework {
-            baseName = "shared"
+            baseName = "Shared"
             isStatic = true
         }
     }
@@ -52,12 +53,32 @@ kotlin {
             kotlin.srcDirs(analyticsExtension.outputDirectory)
         }
         commonMain.dependencies {
-            implementation(libs.event.runtime)
-            implementation(libs.kotlinx.datetime)
-            implementation(libs.kotlinx.coroutines)
+            api(libs.event.runtime)
+            implementation(libs.kotlinx.coroutines.core)
+            implementation(libs.ktor.client.core)
+            implementation(libs.ktor.client.content.negotiation)
+            implementation(libs.ktor.serialization.kotlinx.json)
+        }
+        androidMain.dependencies {
+            implementation(libs.ktor.client.okhttp)
+        }
+        jvmMain.dependencies {
+            implementation(libs.ktor.client.okhttp)
+        }
+        jsMain.dependencies {
+            implementation(libs.ktor.client.js)
+        }
+        iosMain.dependencies {
+            implementation(libs.ktor.client.darwin)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
+        }
+
+        all {
+            languageSettings.apply {
+                optIn("kotlin.js.ExperimentalJsExport")
+            }
         }
     }
 }

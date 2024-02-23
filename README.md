@@ -9,12 +9,14 @@ and are Kotlin data classes with support for Kotlin Multiplatform.
 
 # TODOs
 
-- sample apps
-  -- configure native app samples (JS, iOS) to take distributed shared library from private NPM artifactory and Cocoapods/SPM
-  -- make the samples with more real world examples - configure a dummy analytics service to send events on button clicks in the samples
+- Fix native iOS sample for XCode 15
+- copy the real-world sample from multiplatform project Sample to native project samples
 - clean up CodeGenerator
 - more unit tests for plugin, especially code generation
-- add info in README how to run locally
--- for native samples how to setup, update for local dependencies instead of remote, install dependencies etc. 
+- add info in README how to run locally, what to install, which commands to execute etc.
+- republish Github Packages
+- make Github repo public
+- configure native iOS app sample to take distributed shared library from private Cocoapods specs
+- for native samples how to setup, update for local dependencies instead of remote, install dependencies etc. 
 - GithubActions/CI support
 - add an option to provide an allowlist for event/attribute names or an interface for filtering/truncating attributes/values

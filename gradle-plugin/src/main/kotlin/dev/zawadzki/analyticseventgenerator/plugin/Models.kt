@@ -18,12 +18,12 @@ import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
 @Serializable
-data class Document(
+internal data class Document(
     @Serializable(with = EventListDeserializer::class) val events: List<Event>
 )
 
 @Serializable
-data class Event(
+internal data class Event(
     @Transient val name: String = "",
     val value: String,
     val description: String = "",
@@ -31,7 +31,7 @@ data class Event(
 )
 
 @Serializable
-data class Attribute(
+internal data class Attribute(
     @Transient val name: String = "",
     val type: Type,
     val mutable: Boolean = false,
@@ -56,7 +56,7 @@ data class Attribute(
 }
 
 @Serializable(with = TypeDeserializer::class)
-sealed interface Type {
+internal sealed interface Type {
 
     val displayableName: String
 
@@ -64,6 +64,12 @@ sealed interface Type {
         get() = false
 
     fun formatValueForCodeInsertion(attribute: Attribute, valueToInsert: String): String
+
+    fun formatAttributeNameForAttributesMap(attribute: Attribute): String =
+        attribute.name.toPropertyName()
+
+    fun formatValueForAttributesMap(attribute: Attribute, valueToInsert: String): String =
+        formatValueForCodeInsertion(attribute, valueToInsert)
 
     // TODO: REMOVE DUPLICATES for formatValueForCodeInsertion
     enum class Primitive(val value: String) : Type {
@@ -166,6 +172,13 @@ sealed interface Type {
             valueToInsert: String
         ): String = "${attribute.name.toClassName()}.${valueToInsert.toEnumConstantName()}"
 
+        override fun formatValueForAttributesMap(
+            attribute: Attribute,
+            valueToInsert: String
+        ): String = "${formatValueForCodeInsertion(attribute, valueToInsert)}.enumValue"
+        override fun formatAttributeNameForAttributesMap(attribute: Attribute): String =
+            "${super.formatAttributeNameForAttributesMap(attribute)}.enumValue"
+
         @Serializable
         data class EnumValue(
             @Transient val name: String = "",
@@ -179,7 +192,7 @@ sealed interface Type {
  * Used to distinguish between when a property is missing vs when it's set to a null value.
  */
 @Serializable(with = OptionalNullableStringDeserializer::class)
-sealed class OptionalNullableString {
+internal sealed class OptionalNullableString {
 
     abstract fun requireValue(): String?
 
@@ -195,7 +208,7 @@ sealed class OptionalNullableString {
     }
 }
 
-object OptionalNullableStringDeserializer : KSerializer<OptionalNullableString> {
+internal object OptionalNullableStringDeserializer : KSerializer<OptionalNullableString> {
 
     private val nullableStringSerializer = String.serializer().nullable
 
@@ -209,7 +222,7 @@ object OptionalNullableStringDeserializer : KSerializer<OptionalNullableString> 
 }
 
 @OptIn(ExperimentalSerializationApi::class)
-object EventListDeserializer : KSerializer<List<Event>> {
+internal object EventListDeserializer : KSerializer<List<Event>> {
 
     override val descriptor: SerialDescriptor = ContextualSerializer(List::class).descriptor
 
@@ -230,7 +243,7 @@ object EventListDeserializer : KSerializer<List<Event>> {
 }
 
 @OptIn(ExperimentalSerializationApi::class)
-object AttributeListDeserializer : KSerializer<List<Attribute>> {
+internal object AttributeListDeserializer : KSerializer<List<Attribute>> {
 
     override val descriptor: SerialDescriptor = ContextualSerializer(List::class).descriptor
 
@@ -253,7 +266,7 @@ object AttributeListDeserializer : KSerializer<List<Attribute>> {
 }
 
 @OptIn(ExperimentalSerializationApi::class)
-object EnumValueListDeserializer : KSerializer<List<Type.Enum.EnumValue>> {
+internal object EnumValueListDeserializer : KSerializer<List<Type.Enum.EnumValue>> {
 
     override val descriptor: SerialDescriptor = ContextualSerializer(List::class).descriptor
 
@@ -274,7 +287,7 @@ object EnumValueListDeserializer : KSerializer<List<Type.Enum.EnumValue>> {
 }
 
 @OptIn(ExperimentalSerializationApi::class)
-object TypeDeserializer : KSerializer<Type> {
+internal object TypeDeserializer : KSerializer<Type> {
     private val enumSerializer = Type.Enum.serializer()
 
     override val descriptor: SerialDescriptor = ContextualSerializer(Type::class).descriptor

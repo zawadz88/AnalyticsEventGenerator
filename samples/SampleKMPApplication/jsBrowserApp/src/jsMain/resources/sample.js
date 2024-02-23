@@ -1,15 +1,10 @@
-var rootElement = document.getElementById("root");
-var greeting = jsBrowserApp.getGreeting();
-
-var eventWithLong = new jsBrowserApp.dev.zawadzki.samplekmpapplication.event.SampleActionWithTimer(BigInt("297153970613387264"));
-var eventWithDefaults = new jsBrowserApp.dev.zawadzki.samplekmpapplication.event.SampleButtonTapped("buttonId1", null);
-var secondEventWithDefaults = new jsBrowserApp.dev.zawadzki.samplekmpapplication.event.SampleButtonTapped("buttonId1", null, "value for someOptional2");
-var eventWithEnum = new jsBrowserApp.dev.zawadzki.samplekmpapplication.event.SampleSomething(true, 12, 12, 1.0, jsBrowserApp.dev.zawadzki.samplekmpapplication.event.SampleSomething.MyType.CUSTOM);
-rootElement.innerHTML = "<div>" + jsBrowserApp.getGreeting() + "</div>"
-    + "<br/>"
-    + "<div> eventWithLong: " + eventWithLong.toString() + "</div>"
-    + "<div> eventWithDefaults: " + eventWithDefaults.toString() + "</div>"
-    + "<div> secondEventWithDefaults: " + secondEventWithDefaults.toString() + "</div>"
-    + "<div> eventWithEnum: " + eventWithEnum.toString() + "</div>";
-
-jsBrowserApp.dev.zawadzki.samplekmpapplication.executeAction();
+let repository = jsBrowserApp.dev.zawadzki.samplekmpapplication.di.eventReportingRepository;
+document.getElementById("sampleEventButton").onclick = function() {
+    let sampleEvent = new jsBrowserApp.dev.zawadzki.samplekmpapplication.event.SampleSomething(true, 12, 12, 1.0, jsBrowserApp.dev.zawadzki.samplekmpapplication.event.SampleSomething.MyType.CUSTOM);
+    repository.reportEvent(sampleEvent);
+};
+document.getElementById("sampleEventWithDurationButton").onclick = function() {
+    let eventWithTimer = new jsBrowserApp.dev.zawadzki.samplekmpapplication.event.SampleActionWithTimer(0);
+    eventWithTimer.duration = 2500;
+    repository.reportEvent(eventWithTimer);
+};

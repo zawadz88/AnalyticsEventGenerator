@@ -1,12 +1,13 @@
 [versions]
 sharedAnalyticsLibrary = "1.0.0"
 
-agp = "8.1.4"
+agp = "8.2.0"
 npmPublish = "3.4.2"
 eventPlugin = "0.1"
 kotlin = "1.9.21"
-kotlinCoroutines = "1.8.0-RC2"
+kotlinCoroutines = "1.8.0"
 kotlinDateTime = "0.5.0"
+ktor = "2.3.8"
 
 android-compileSdk = "34"
 android-minSdk = "24"
@@ -18,9 +19,16 @@ junit4 = "4.13.2"
 event-plugin = { module = "dev.zawadzki.analyticseventgenerator:gradle-plugin", version.ref = "eventPlugin" }
 event-runtime = { module = "dev.zawadzki.analyticseventgenerator:runtime", version.ref = "eventPlugin" }
 
-kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
-kotlinx-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinCoroutines" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinDateTime" }
+kotlinx-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinCoroutines" }
+ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
+ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
+ktor-client-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor" }
+ktor-client-js = { module = "io.ktor:ktor-client-js", version.ref = "ktor" }
+ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
+ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
+
+kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 
 junit4 = { module = "junit:junit", version.ref = "junit4" }
 
@@ -30,5 +38,6 @@ kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 kotlinCocoapods = { id = "org.jetbrains.kotlin.native.cocoapods", version.ref = "kotlin" }
 npmPublish = { id = "dev.petuska.npm.publish", version.ref = "npmPublish" }
+kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 
 eventGenerator = { id = "dev.zawadzki.analyticseventgenerator", version.ref = "eventPlugin" }

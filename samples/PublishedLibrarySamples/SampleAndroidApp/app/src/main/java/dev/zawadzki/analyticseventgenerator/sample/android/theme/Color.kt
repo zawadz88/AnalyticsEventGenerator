@@ -1,4 +1,4 @@
-package com.example.yamlplayground.ui.theme
+package dev.zawadzki.analyticseventgenerator.sample.android.theme
 
 import androidx.compose.ui.graphics.Color
 

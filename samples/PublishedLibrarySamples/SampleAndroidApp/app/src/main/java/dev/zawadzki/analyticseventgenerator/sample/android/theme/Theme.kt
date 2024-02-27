@@ -1,4 +1,4 @@
-package com.example.yamlplayground.ui.theme
+package dev.zawadzki.analyticseventgenerator.sample.android.theme
 
 import android.app.Activity
 import android.os.Build

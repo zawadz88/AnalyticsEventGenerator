@@ -18,6 +18,7 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.kotlinCocoapods)
     alias(libs.plugins.androidLibrary)
+    alias(libs.plugins.kotlinx.serialization)
     alias(libs.plugins.eventGenerator)
     `maven-publish`
     // TODO: configure publishing for Cocoapods to Github
@@ -73,12 +74,29 @@ kotlin {
             kotlin.srcDirs(analyticsExtension.outputDirectory)
         }
         commonMain.dependencies {
-            implementation(libs.event.runtime)
+            api(libs.event.runtime)
             implementation(libs.kotlinx.datetime)
             implementation(libs.kotlinx.coroutines)
+            implementation(libs.ktor.client.core)
+            implementation(libs.ktor.client.content.negotiation)
+            implementation(libs.ktor.serialization.kotlinx.json)
+        }
+        androidMain.dependencies {
+            implementation(libs.ktor.client.okhttp)
+        }
+        jsMain.dependencies {
+            implementation(libs.ktor.client.js)
+        }
+        iosMain.dependencies {
+            implementation(libs.ktor.client.darwin)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
+        }
+        all {
+            languageSettings.apply {
+                optIn("kotlin.js.ExperimentalJsExport")
+            }
         }
     }
 }

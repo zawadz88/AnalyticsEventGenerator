@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import HelloWorld from './components/HelloWorld';
+import Content from './components/Content';
 import './styles/app.scss';
 
 ReactDOM.render(
-    <HelloWorld/>,
+    <Content/>,
     document.getElementById('app')
 );

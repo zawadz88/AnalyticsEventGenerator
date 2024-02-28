@@ -9,12 +9,13 @@ and are Kotlin data classes with support for Kotlin Multiplatform.
 
 # TODOs
 
-- clean up CodeGenerator
-- more unit tests for plugin, especially code generation
-- add info in README how to run locally, what to install, which commands to execute etc.
+- add proper unit tests for plugin, especially code generation
+- move published samples to a separate repository
 - republish Github Packages
 - make Github repo public
 - configure native iOS app sample to take distributed shared library from private Cocoapods specs
+- add info in README how to run locally, what to install, which commands to execute etc.
 - for native samples how to setup, update for local dependencies instead of remote, install dependencies etc. 
 - GithubActions/CI support
+- add ktlint & detekt
 - add an option to provide an allowlist for event/attribute names or an interface for filtering/truncating attributes/values

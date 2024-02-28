@@ -1,4 +1,4 @@
-package dev.zawadzki.analyticseventgenerator.plugin
+package dev.zawadzki.analyticseventgenerator.plugin.internal
 
 import com.charleskorn.kaml.Yaml
 import org.junit.Test
@@ -22,6 +22,11 @@ class CodeGenerationTest {
     }
 
     private fun generateCode(document: Document) {
-        generateCode(CodeGenerationParams("Sample", "com.example"), document)
+        generateCode(
+            CodeGenerationParams(
+                "Sample",
+                "com.example"
+            ), document
+        )
     }
 }

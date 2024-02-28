@@ -1,5 +1,8 @@
 package dev.zawadzki.analyticseventgenerator.plugin
 
+import dev.zawadzki.analyticseventgenerator.plugin.internal.CodeGenerationParams
+import dev.zawadzki.analyticseventgenerator.plugin.internal.generateCode
+import dev.zawadzki.analyticseventgenerator.plugin.internal.readDocuments
 import org.gradle.api.DefaultTask
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -13,9 +16,6 @@ import org.gradle.api.tasks.TaskAction
 import org.gradle.kotlin.dsl.create
 import org.gradle.kotlin.dsl.register
 import java.io.File
-
-// also update in libs.versions.toml
-private const val LIBRARY_VERSION = "0.1"
 
 class AnalyticsPlugin : Plugin<Project> {
     override fun apply(project: Project) {

@@ -1,4 +1,4 @@
-package dev.zawadzki.analyticseventgenerator.plugin
+package dev.zawadzki.analyticseventgenerator.plugin.internal
 
 import java.util.Locale
 

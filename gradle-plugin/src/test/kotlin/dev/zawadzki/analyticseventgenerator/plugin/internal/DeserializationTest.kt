@@ -1,4 +1,4 @@
-package dev.zawadzki.analyticseventgenerator.plugin
+package dev.zawadzki.analyticseventgenerator.plugin.internal
 
 import com.charleskorn.kaml.Yaml
 import org.junit.Test

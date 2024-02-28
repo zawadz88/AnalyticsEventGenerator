@@ -9,8 +9,6 @@ and are Kotlin data classes with support for Kotlin Multiplatform.
 
 # TODOs
 
-- Fix native iOS sample for XCode 15
-- copy the real-world sample from multiplatform project Sample to native project samples
 - clean up CodeGenerator
 - more unit tests for plugin, especially code generation
 - add info in README how to run locally, what to install, which commands to execute etc.

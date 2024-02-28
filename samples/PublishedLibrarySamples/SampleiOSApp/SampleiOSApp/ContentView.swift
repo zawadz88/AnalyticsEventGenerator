@@ -9,21 +9,26 @@ import SwiftUI
 import SharedAnalyticsLibrary
 
 struct ContentView: View {
-    let event = SampleAdditionalButtonTapped(buttonId: "xxx")
-    let eventWithDefaultArgs = SampleButtonTapped(buttonId: "buttonId1", someOptional: nil)
-    let greet = Greeting().greet()
-
-    let action: Void = ActionKt.executeAction()
-
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            
-                Text(greet + "\n\n " + event.description() + "\n\n" + eventWithDefaultArgs.description())
+        VStack(spacing: 16) {
+            Button("Send sample event") {
+                let sampleEvent = SampleSomething(
+                    isEnabled: true,
+                    clickCount: 1,
+                    duration: 2000,
+                    accuracy: 0.5,
+                    myType: SampleSomething.MyType.custom
+                )
+                ServiceLocatorKt.eventReportingRepository.reportEvent(event: sampleEvent)
+            }
+            Button("Send event with duration") {
+                let eventWithTimer = SampleActionWithTimer(duration: 0)
+                eventWithTimer.duration = 2500
+                ServiceLocatorKt.eventReportingRepository.reportEvent(event: eventWithTimer)
+            }
         }
-        .padding()
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+                .padding()
     }
 }
 

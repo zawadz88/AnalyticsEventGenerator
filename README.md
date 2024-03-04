@@ -7,13 +7,17 @@ It allows to generate Kotlin model classes that can be used for analytics purpos
 an event to Google Analytics or other system. The events are generated from YAML configuration files
 and are Kotlin data classes with support for Kotlin Multiplatform.
 
+Supported Kotlin Multiplatform targets are: Android, Apple (iOS, WatchOS, etc.), JVM and JavaScript.
+
 # TODOs
 
 - add proper unit tests for plugin, especially code generation
+- set up Koin instead of Service Locator pattern in the sample apps
 - move published samples to a separate repository
 - republish Github Packages
-- make Github repo public
 - configure native iOS app sample to take distributed shared library from private Cocoapods specs
+- add MIT license
+- make Github repo public
 - add info in README how to run locally, what to install, which commands to execute etc.
 - for native samples how to setup, update for local dependencies instead of remote, install dependencies etc. 
 - GithubActions/CI support

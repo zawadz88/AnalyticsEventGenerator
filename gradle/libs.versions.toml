@@ -9,7 +9,7 @@ kotlinDsl = "4.2.1"
 kaml = { strictly = "0.54.0" }
 kotlinxSerialization = { strictly = "1.5.1" }
 kotlinPoet = { strictly = "1.14.2" }
-junit = { strictly = "4.13.2" }
+junit5 = { strictly = "5.8.1" }
 
 [libraries]
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
@@ -22,7 +22,7 @@ kotlinx-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-
 kaml = { module = "com.charleskorn.kaml:kaml", version.ref = "kaml" }
 kotlinpoet = { module = "com.squareup:kotlinpoet", version.ref = "kotlinPoet" }
 
-junit = { module = "junit:junit", version.ref = "junit" }
+junit5 = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit5" }
 
 [plugins]
 kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }

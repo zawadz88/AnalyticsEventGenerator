@@ -54,7 +54,7 @@ abstract class GenerateAnalyticsEventsTask : DefaultTask() {
 
     @TaskAction
     fun execute() {
-        logger.debug(
+        logger.info(
             """
             Generating analytics events with params:
             packageName: ${packageName.orNull}
@@ -64,14 +64,14 @@ abstract class GenerateAnalyticsEventsTask : DefaultTask() {
             """.trimIndent()
         )
 
-        val documents = readDocuments(inputFiles)
+        val documents = readDocuments(inputFiles).getOrThrow()
 
-        logger.debug("Docs: $documents")
+        logger.info("Docs: $documents")
 
         val generatedFileSpecs =
             documents.flatMap { doc -> generateCode(codeGenerationParams, doc) }
 
-        logger.debug("generatedFileSpecs: $generatedFileSpecs")
+        logger.info("generatedFileSpecs: $generatedFileSpecs")
 
         generatedFileSpecs.forEach { it.writeTo(outputDirectoryFile) }
     }

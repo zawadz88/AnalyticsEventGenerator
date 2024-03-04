@@ -27,7 +27,8 @@ internal data class Event(
     @Transient val name: String = "",
     val value: String,
     val description: String = "",
-    @Serializable(with = AttributeListDeserializer::class) val attributes: List<Attribute>
+    @Serializable(with = AttributeListDeserializer::class)
+    val attributes: List<Attribute> = emptyList()
 )
 
 @Serializable
@@ -51,7 +52,6 @@ internal data class Attribute(
         if (fixed is OptionalNullableString.Present && fixed.value == null) {
             throw SerializationException("Non-null type '${type.displayableName}' for attribute '$name' had a fixed value set to null")
         }
-        // TODO: validate enum is not an empty list
     }
 }
 
@@ -71,7 +71,6 @@ internal sealed interface Type {
     fun formatValueForAttributesMap(attribute: Attribute, valueToInsert: String): String =
         formatValueForCodeInsertion(attribute, valueToInsert)
 
-    // TODO: REMOVE DUPLICATES for formatValueForCodeInsertion
     enum class Primitive(val value: String) : Type {
         STRING("String") {
             override fun formatValueForCodeInsertion(
@@ -176,6 +175,7 @@ internal sealed interface Type {
             attribute: Attribute,
             valueToInsert: String
         ): String = "${formatValueForCodeInsertion(attribute, valueToInsert)}.enumValue"
+
         override fun formatAttributeNameForAttributesMap(attribute: Attribute): String =
             "${super.formatAttributeNameForAttributesMap(attribute)}.enumValue"
 

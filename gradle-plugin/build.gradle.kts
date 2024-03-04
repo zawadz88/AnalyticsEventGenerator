@@ -30,7 +30,14 @@ dependencies {
     implementation(libs.kotlin.stdlib)
     implementation(project(":runtime"))
 
-    testImplementation(libs.junit)
+    testImplementation(libs.junit5)
+}
+
+tasks.test {
+    useJUnitPlatform()
+    testLogging {
+        events("passed", "skipped", "failed")
+    }
 }
 
 val githubRepository: String? by project

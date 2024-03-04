@@ -32,35 +32,17 @@ internal fun generateCode(params: CodeGenerationParams, document: Document): Lis
         val eventName = params.prefix + event.name.toClassName()
         val classBuilder = TypeSpec.classBuilder(eventName)
             .superclass(AbstractEvent::class)
+            .addKdoc(event.description)
             .addModifiers(KModifier.DATA)
         val constructorBuilder = FunSpec.constructorBuilder()
         val attributesPropertyValues = mutableListOf<String>()
 
-        for (attribute in event.attributes) {
-            val type = attribute.type
-            val hasFixedValue = attribute.fixed is OptionalNullableString.Present
-
-            if (type is Type.Enum) {
-                addNewEnumType(
-                    attributeName = attribute.name,
-                    type = type,
-                    classBuilder = classBuilder
-                )
-            }
-            if (!hasFixedValue) {
-                addStandardAttribute(
-                    attribute = attribute,
-                    constructorBuilder = constructorBuilder,
-                    classBuilder = classBuilder,
-                    attributesPropertyValues = attributesPropertyValues
-                )
-            } else {
-                addAttributeWithFixedValue(
-                    attribute = attribute,
-                    attributesPropertyValues = attributesPropertyValues
-                )
-            }
-        }
+        parseAttributes(
+            event = event,
+            classBuilder = classBuilder,
+            constructorBuilder = constructorBuilder,
+            attributesPropertyValues = attributesPropertyValues
+        )
         classBuilder.primaryConstructor(constructorBuilder.build())
         addSecondaryConstructors(
             constructorBuilder = constructorBuilder,
@@ -76,9 +58,40 @@ internal fun generateCode(params: CodeGenerationParams, document: Document): Lis
 
         createFileSpec(params = params, eventName = eventName, classBuilder = classBuilder)
     }
-
-    files.forEach { file -> file.writeTo(System.out) }
     return files
+}
+
+private fun parseAttributes(
+    event: Event,
+    classBuilder: TypeSpec.Builder,
+    constructorBuilder: FunSpec.Builder,
+    attributesPropertyValues: MutableList<String>
+) {
+    for (attribute in event.attributes) {
+        val type = attribute.type
+        val hasFixedValue = attribute.fixed is OptionalNullableString.Present
+
+        if (type is Type.Enum) {
+            addNewEnumType(
+                attributeName = attribute.name,
+                type = type,
+                classBuilder = classBuilder
+            )
+        }
+        if (!hasFixedValue) {
+            addStandardAttribute(
+                attribute = attribute,
+                constructorBuilder = constructorBuilder,
+                classBuilder = classBuilder,
+                attributesPropertyValues = attributesPropertyValues
+            )
+        } else {
+            addAttributeWithFixedValue(
+                attribute = attribute,
+                attributesPropertyValues = attributesPropertyValues
+            )
+        }
+    }
 }
 
 private fun addStandardAttribute(
@@ -96,11 +109,7 @@ private fun addStandardAttribute(
     if (hasDefaultValue) {
         val defaultValue = attribute.default.requireValue()
         if (defaultValue == null) {
-            if (type.isNullable) {
-                parameterBuilder.defaultValue("null")
-            } else {
-                throw IllegalArgumentException("Cannot set default null value to a non-nullable type '$type' for attribute '$attributeName'")
-            }
+            parameterBuilder.defaultValue("null")
         } else {
             parameterBuilder.defaultValue(
                 type.formatValueForCodeInsertion(attribute, defaultValue)
@@ -119,6 +128,9 @@ private fun addStandardAttribute(
         PropertySpec.builder(attributeNameAsProperty, poetTypeName)
             .initializer(attributeNameAsProperty)
             .mutable(attribute.mutable)
+            .apply {
+                attribute.description.takeIf { it.isNotBlank() }?.let { addKdoc(it) }
+             }
             .build()
     )
     attributesPropertyValues.add(
@@ -140,8 +152,6 @@ private fun addAttributeWithFixedValue(
     if (fixedValue == null) {
         if (type.isNullable) {
             attributesPropertyValues.add("\"$attributeName\" to null")
-        } else {
-            throw IllegalArgumentException("Cannot set fixed null value to a non-nullable type '$type' for attribute '$attributeName'")
         }
     } else {
         attributesPropertyValues.add(
@@ -174,6 +184,7 @@ private fun addNewEnumType(
         enumBuilder.addEnumConstant(
             enumConstantName, TypeSpec.anonymousClassBuilder()
                 .addSuperclassConstructorParameter("%S", enumValue.value)
+                .addKdoc(enumValue.description)
                 .build()
         )
     }

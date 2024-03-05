@@ -11,15 +11,14 @@ Supported Kotlin Multiplatform targets are: Android, Apple (iOS, WatchOS, etc.),
 
 # TODOs
 
-- add proper unit tests for plugin, especially code generation
-- set up Koin instead of Service Locator pattern in the sample apps
+- set up Koin instead of Service Locator in the sample apps
 - move published samples to a separate repository
 - republish Github Packages
 - configure native iOS app sample to take distributed shared library from private Cocoapods specs
 - add MIT license
-- make Github repo public
 - add info in README how to run locally, what to install, which commands to execute etc.
-- for native samples how to setup, update for local dependencies instead of remote, install dependencies etc. 
+- for native samples how to setup, update for local dependencies instead of remote, install dependencies etc.
+- make Github repo public
 - GithubActions/CI support
 - add ktlint & detekt
 - add an option to provide an allowlist for event/attribute names or an interface for filtering/truncating attributes/values

@@ -41,14 +41,38 @@ internal data class Attribute(
     val fixed: OptionalNullableString = OptionalNullableString.Missing
 ) {
 
+    /**
+     * We do not validate in #init block as at this point we won't have [Attribute.name]
+     * which gets set when serializing a List of [Attribute]s.
+     */
     @Throws(SerializationException::class)
-    fun validate() {
+    internal fun validate() {
+        if (default is OptionalNullableString.Present && default.value != null) {
+            try {
+                type.formatValueForCodeInsertion(this, default.value)
+            } catch (ex: Exception) {
+                throw SerializationException(
+                    message = "Invalid default value for '$name' attribute of type $type: '${default.value}'",
+                    cause = ex
+                )
+            }
+        }
+        if (fixed is OptionalNullableString.Present && fixed.value != null) {
+            try {
+                type.formatValueForCodeInsertion(this, fixed.value)
+            } catch (ex: Exception) {
+                throw SerializationException(
+                    message = "Invalid fixed value for '$name' attribute of type $type: '${fixed.value}'",
+                    cause = ex
+                )
+            }
+        }
+
         if (type.isNullable) return
 
         if (default is OptionalNullableString.Present && default.value == null) {
             throw SerializationException("Non-null type '${type.displayableName}' for attribute '$name' had a default value set to null")
         }
-
         if (fixed is OptionalNullableString.Present && fixed.value == null) {
             throw SerializationException("Non-null type '${type.displayableName}' for attribute '$name' had a fixed value set to null")
         }

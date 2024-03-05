@@ -287,6 +287,34 @@ internal class AttributeTest {
     }
 
     @Test
+    fun `deserialize integer with invalid default value not supported`() {
+        input = """
+            type: Integer
+            default: not a number
+            """.trimIndent()
+
+        deserialize()
+
+        assertThrows<SerializationException> {
+            attribute.validate()
+        }
+    }
+
+    @Test
+    fun `deserialize double with invalid fixed value not supported`() {
+        input = """
+            type: Double?
+            fixed: not a number
+            """.trimIndent()
+
+        deserialize()
+
+        assertThrows<SerializationException> {
+            attribute.validate()
+        }
+    }
+
+    @Test
     fun `deserialize enum with fixed value`() {
         input = """
             type:

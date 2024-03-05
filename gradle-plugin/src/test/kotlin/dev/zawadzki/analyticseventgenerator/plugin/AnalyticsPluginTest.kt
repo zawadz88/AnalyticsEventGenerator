@@ -113,6 +113,28 @@ internal class AnalyticsPluginTest {
         ) { "Was: ${result.output}" }
     }
 
+    @Test
+    fun `do not generate kotlin classes when input contains invalid value format`() {
+        givenDefaultExtensionInBuildFile()
+        val yamlInputWithNullDefaultValueForNonNullAttribute = """
+                events:
+                  ButtonTapped:
+                    value: "button_tapped"
+                    attributes:
+                      shown:
+                        type: Boolean
+                        default: unknown
+            """.trimIndent()
+        yamlFile.writeText(yamlInputWithNullDefaultValueForNonNullAttribute)
+
+        runTask(expectFailure = true)
+
+        assertEquals(TaskOutcome.FAILED, result.task(GENERATE_ANALYTICS_EVENTS_TASK_NAME)?.outcome)
+        assertTrue(
+            result.output.contains("AnalyticsGenerationException: Source: file .*sample.yaml, cause: Invalid default value for 'shown' attribute of type BOOLEAN: 'unknown'".toRegex())
+        ) { "Was: ${result.output}" }
+    }
+
     private fun givenDefaultExtensionInBuildFile() {
         buildFile.appendText(
             """

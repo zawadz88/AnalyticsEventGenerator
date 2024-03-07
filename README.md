@@ -1,23 +1,28 @@
 # Analytics Event Generator
 
-This project tries to solve the issue on cross-platform misalignment when it comes to the events/metrics sent to various analytical systems.
-It is not common that we e.g. send different attributes on Android than on iOS for example.
+This project tries to solve the issue of cross-platform misalignment when it comes to the events/metrics sent to various analytical systems.
+So that we always report user/system actions in the same fashion, regardless of the client platform.
 
-It allows to generate Kotlin model classes that can be used for analytics purposes e.g. to send
+It's a Gradle plugin that allows to generate Kotlin model classes that can be used for analytics purposes e.g. to send
 an event to Google Analytics or other system. The events are generated from YAML configuration files
 and are Kotlin data classes with support for Kotlin Multiplatform.
 
 Supported Kotlin Multiplatform targets are: Android, Apple (iOS, WatchOS, etc.), JVM and JavaScript.
 
+## Samples
+
+You can find a sample project in `/samples` in the repository. It's a Kotlin Multiplatform project with Android, Desktop JVM, iOS and Web JavaScript support.
+
+There's also a set of sample projects that show how to create and publish a shared KMP library using this plugin. 
+And then consume in separate Android, iOS and Web JS projects:
+- [Shared library](https://github.com/zawadz88/AnalyticsEventGeneratorSample-SharedLibrary) - uses plugin and publishes to Github Packages (NPM & Maven - regular for Android and KMM + KMMBridge for SPM)
+- [Android app](https://github.com/zawadz88/AnalyticsEventGeneratorSample-AndroidApp) using Gradle
+- [iOS app](https://github.com/zawadz88/AnalyticsEventGeneratorSample-iOSApp) using SPM
+- [Web app](https://github.com/zawadz88/AnalyticsEventGeneratorSample-ReactApp) using Yarn, Webpack & react JS
+
 # TODOs
 
-- move published samples to a separate repository
-- republish Github Packages
-- configure native iOS app sample to take distributed shared library from private Cocoapods specs
-- add MIT license
-- add info in README how to run locally, what to install, which commands to execute etc.
-- for native samples how to setup, update for local dependencies instead of remote, install dependencies etc.
-- make Github repo public
+- add Getting Started and setup
 - GithubActions/CI support
 - add ktlint & detekt
-- add an option to provide an allowlist for event/attribute names or an interface for filtering/truncating attributes/values
+- make Github repo public

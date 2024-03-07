@@ -13,12 +13,12 @@ struct ContentView: View {
                     accuracy: 0.5,
                     myType: SampleSomething.MyType.custom
                 )
-                ServiceLocatorKt.eventReportingRepository.reportEvent(event: sampleEvent)
+                KoinHelper.shared.eventReportingRepository.reportEvent(event: sampleEvent)
             }
             Button("Send event with duration") {
                 let eventWithTimer = SampleActionWithTimer(duration: 0)
                 eventWithTimer.duration = 2500
-                ServiceLocatorKt.eventReportingRepository.reportEvent(event: eventWithTimer)
+                KoinHelper.shared.eventReportingRepository.reportEvent(event: eventWithTimer)
             }
         }
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)

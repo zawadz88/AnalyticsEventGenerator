@@ -1,4 +1,5 @@
-let repository = jsBrowserApp.dev.zawadzki.samplekmpapplication.di.eventReportingRepository;
+jsBrowserApp.dev.zawadzki.samplekmpapplication.di.KoinHelper.initKoin();
+let repository = jsBrowserApp.dev.zawadzki.samplekmpapplication.di.KoinHelper.eventReportingRepository;
 document.getElementById("sampleEventButton").onclick = function() {
     let sampleEvent = new jsBrowserApp.dev.zawadzki.samplekmpapplication.event.SampleSomething(true, 12, 12, 1.0, jsBrowserApp.dev.zawadzki.samplekmpapplication.event.SampleSomething.MyType.CUSTOM);
     repository.reportEvent(sampleEvent);

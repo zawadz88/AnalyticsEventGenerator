@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsCompose)
+    alias(libs.plugins.ksp)
 }
 
 kotlin {
@@ -22,6 +23,7 @@ kotlin {
         androidMain.dependencies {
             implementation(libs.compose.ui.tooling.preview)
             implementation(libs.androidx.activity.compose)
+            implementation(libs.koin.android)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -31,6 +33,8 @@ kotlin {
             @OptIn(ExperimentalComposeLibrary::class)
             implementation(compose.components.resources)
             implementation(projects.shared)
+            implementation(libs.koin.core)
+            implementation(libs.koin.annotations)
         }
         jvmMain.dependencies {
             implementation(compose.desktop.currentOs)
@@ -42,6 +46,14 @@ kotlin {
             }
         }
     }
+}
+
+dependencies {
+    ksp(libs.koin.compiler)
+}
+
+ksp {
+    arg("KOIN_CONFIG_CHECK","true")
 }
 
 android {

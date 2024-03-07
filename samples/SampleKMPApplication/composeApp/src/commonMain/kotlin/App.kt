@@ -6,9 +6,10 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import dev.zawadzki.samplekmpapplication.di.eventReportingRepository
+import dev.zawadzki.samplekmpapplication.analytics.EventReportingRepository
 import dev.zawadzki.samplekmpapplication.event.SampleActionWithTimer
 import dev.zawadzki.samplekmpapplication.event.SampleSomething
+import org.koin.mp.KoinPlatform.getKoin
 
 @Composable
 fun App() {
@@ -22,6 +23,7 @@ fun App() {
                     accuracy = 0.5,
                     myType = SampleSomething.MyType.CUSTOM
                 )
+                val eventReportingRepository = getKoin().get<EventReportingRepository>()
                 eventReportingRepository.reportEvent(sampleEvent)
             }) {
                 Text("Send sample event")
@@ -29,6 +31,7 @@ fun App() {
             Button(onClick = {
                 val eventWithTimer = SampleActionWithTimer(duration = 0)
                 eventWithTimer.duration = 2500L
+                val eventReportingRepository = getKoin().get<EventReportingRepository>()
                 eventReportingRepository.reportEvent(eventWithTimer)
             }) {
                 Text("Send event with duration")

@@ -5,6 +5,7 @@ import dev.zawadzki.samplekmpapplication.analytics.extension.filterReportableAtt
 import dev.zawadzki.samplekmpapplication.analytics.extension.filterReportableMetrics
 import dev.zawadzki.samplekmpapplication.analytics.io.ReportEventRequestBody
 import dev.zawadzki.samplekmpapplication.core.suspendRunCatching
+import dev.zawadzki.samplekmpapplication.di.IO
 import io.ktor.client.HttpClient
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
@@ -12,10 +13,13 @@ import io.ktor.client.statement.HttpResponse
 import io.ktor.client.statement.bodyAsText
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import org.koin.core.annotation.Named
+import org.koin.core.annotation.Single
 
+@Single
 internal class EventReportingRepositoryImpl(
     private val httpClient: HttpClient,
-    private val coroutineScope: CoroutineScope
+    @Named(IO) private val coroutineScope: CoroutineScope
 ) : EventReportingRepository {
 
     override fun reportEvent(event: AbstractEvent) {

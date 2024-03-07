@@ -11,7 +11,6 @@ Supported Kotlin Multiplatform targets are: Android, Apple (iOS, WatchOS, etc.),
 
 # TODOs
 
-- set up Koin instead of Service Locator in the sample apps
 - move published samples to a separate repository
 - republish Github Packages
 - configure native iOS app sample to take distributed shared library from private Cocoapods specs

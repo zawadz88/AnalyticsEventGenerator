@@ -8,6 +8,7 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinx.serialization)
+    alias(libs.plugins.ksp)
     id(libs.plugins.eventGenerator.get().pluginId)
 }
 
@@ -18,8 +19,17 @@ val analyticsExtension = the<AnalyticsExtension>().apply {
     inputFiles.from(layout.projectDirectory.file("src/additionalEventDefinitions/sample.yaml"))
 }
 
-tasks.matching { it is AbstractKotlinCompile<*> || it is AbstractKotlinNativeCompile<*, *> }
-    .configureEach { dependsOn(tasks.withType<GenerateAnalyticsEventsTask>()) }
+tasks.matching {
+    it is AbstractKotlinCompile<*> || it is AbstractKotlinNativeCompile<*, *> || it.name.endsWith(
+        "SourcesJar",
+        ignoreCase = true
+    )
+}.configureEach {
+    dependsOn(tasks.withType<GenerateAnalyticsEventsTask>())
+    if (name != "kspCommonMainKotlinMetadata") {
+        dependsOn("kspCommonMainKotlinMetadata")
+    }
+}
 
 kotlin {
     androidTarget {
@@ -48,9 +58,13 @@ kotlin {
         }
     }
 
+    applyDefaultHierarchyTemplate()
     sourceSets {
         commonMain.configure {
-            kotlin.srcDirs(analyticsExtension.outputDirectory)
+            kotlin.srcDirs(
+                analyticsExtension.outputDirectory,
+                "build/generated/ksp/metadata/commonMain/kotlin"
+            )
         }
         commonMain.dependencies {
             api(libs.event.runtime)
@@ -58,6 +72,8 @@ kotlin {
             implementation(libs.ktor.client.core)
             implementation(libs.ktor.client.content.negotiation)
             implementation(libs.ktor.serialization.kotlinx.json)
+            implementation(libs.koin.annotations)
+            implementation(libs.koin.core)
         }
         androidMain.dependencies {
             implementation(libs.ktor.client.okhttp)
@@ -74,6 +90,11 @@ kotlin {
         commonTest.dependencies {
             implementation(libs.kotlin.test)
         }
+        val jsiosMain by creating {
+            dependsOn(commonMain.get())
+        }
+        iosMain.get().dependsOn(jsiosMain)
+        jsMain.get().dependsOn(jsiosMain)
 
         all {
             languageSettings.apply {
@@ -82,6 +103,16 @@ kotlin {
         }
     }
 }
+
+//region KSP configuration for Koin
+dependencies {
+    add("kspCommonMainMetadata", libs.koin.compiler)
+    // Other compilation targets should be added here, see up in article.
+}
+ksp {
+    arg("KOIN_CONFIG_CHECK", "true")
+}
+//endregion
 
 android {
     namespace = "dev.zawadzki.samplekmpapplication"

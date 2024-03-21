@@ -23,6 +23,7 @@ And then consume in separate Android, iOS and Web JS projects:
 # TODOs
 
 - add Getting Started and setup
-- GithubActions/CI support
+- publish action for plugin with Github Actions
+- Github Actions for sample projects
 - add ktlint & detekt
 - make Github repo public

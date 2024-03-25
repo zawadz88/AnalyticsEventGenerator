@@ -1,5 +1,4 @@
 [versions]
-# Also update in AnalyticsPlugin.kt
 library = "0.1"
 
 kotlin = { strictly = "1.9.21" }

@@ -1,0 +1,71 @@
+name: Publish
+
+on:
+  workflow_dispatch:
+    inputs:
+      new-version:
+        required: true
+        description: New plugin version e.g. 1.0
+env:
+  XCODE_VERSION: '15.0.1'
+  JAVA_VERSION: '17'
+
+jobs:
+  build:
+    runs-on: macOS-13
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Setup XCode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: ${{ env.XCODE_VERSION }}
+      - name: Setup JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: |
+            8
+            ${{ env.JAVA_VERSION }}
+          distribution: "zulu"
+      - name: Cache build tooling
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.konan
+          key: ${{ runner.os }}-v4-${{ hashFiles('*.gradle.kts') }}
+      - name: Update version name
+        uses: MathieuSoysal/replace-string-in-file@v1.1.0
+        with:
+          file: gradle/libs.versions.toml
+          old-string: 'library = ".*$"'
+          new-string: 'library = "{{ github.event.inputs.new-version }}"'
+      - name: TEST
+        run: cat gradle/libs.versions.toml
+      - name: Git commit, tag
+        run: aa # TODO commit and create new tag
+      - name: Build Plugin & Runtime
+        run: |
+          ./gradlew -version --no-daemon
+          ./gradlew check publishToMavenLocal --no-daemon --stacktrace
+        env:
+          GRADLE_OPTS: -Dkotlin.incremental=false -Dorg.gradle.jvmargs="-Xmx3g -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8 -XX:MaxMetaspaceSize=512m"
+      - name: Build KMP Sample app (shared, Android, JVM, JS)
+        working-directory: ./samples/SampleKMPApplication
+        run: ./gradlew check --no-daemon --stacktrace
+        env:
+          GRADLE_OPTS: -Dkotlin.incremental=false -Dorg.gradle.jvmargs="-Xmx3g -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8 -XX:MaxMetaspaceSize=512m"
+      - name: Build iOS Sample app
+        working-directory: ./samples/SampleKMPApplication
+        run: xcodebuild build -project iosApp/iosApp.xcodeproj -configuration Debug -scheme iosApp -sdk iphoneos -destination name='iPhone 15 Pro' -verbose
+      - name: Publish Plugin & Runtime
+        run: |
+          ./gradlew publish --no-daemon --stacktrace
+        env:
+          GRADLE_OPTS: -Dkotlin.incremental=false -Dorg.gradle.jvmargs="-Xmx3g -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8 -XX:MaxMetaspaceSize=512m"
+      - name: Git push
+        run: aa # TODO push version bump and tag
+      - name: Update external samples
+        run: aa # TODO check out Shared project & samples, update plugin & runtime version number & submit PRs, this can be a separate workflow, dependent on this one
+

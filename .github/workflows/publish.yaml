@@ -35,16 +35,23 @@ jobs:
           path: |
             ~/.konan
           key: ${{ runner.os }}-v4-${{ hashFiles('*.gradle.kts') }}
-      - name: Update version name
+      - name: Update library version name
         uses: MathieuSoysal/replace-string-in-file@v1.1.0
         with:
           file: gradle/libs.versions.toml
-          old-string: 'library = ".*$"'
+          old-string: 'library = ".*"'
           new-string: 'library = "{{ github.event.inputs.new-version }}"'
-      - name: TEST
-        run: cat gradle/libs.versions.toml
+      - name: Update version name in sample app
+        uses: MathieuSoysal/replace-string-in-file@v1.1.0
+        with:
+          file: samples/SampleKMPApplication/gradle/libs.versions.toml
+          old-string: 'eventPlugin = ".*"'
+          new-string: 'eventPlugin = "{{ github.event.inputs.new-version }}"'
       - name: Git commit, tag
-        run: aa # TODO commit and create new tag
+        run: |
+          git add gradle/libs.versions.toml
+          git commit -m "[CI] Version bump to ${{ github.event.inputs.new-version }}"
+          git tag ${{ github.event.inputs.new-version }}
       - name: Build Plugin & Runtime
         run: |
           ./gradlew -version --no-daemon
@@ -65,7 +72,4 @@ jobs:
         env:
           GRADLE_OPTS: -Dkotlin.incremental=false -Dorg.gradle.jvmargs="-Xmx3g -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8 -XX:MaxMetaspaceSize=512m"
       - name: Git push
-        run: aa # TODO push version bump and tag
-      - name: Update external samples
-        run: aa # TODO check out Shared project & samples, update plugin & runtime version number & submit PRs, this can be a separate workflow, dependent on this one
-
+        run: git push

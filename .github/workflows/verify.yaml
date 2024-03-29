@@ -1,6 +1,7 @@
 name: Verify
 
-on: [ push, workflow_dispatch, pull_request ]
+#on: [ push, workflow_dispatch, pull_request ]
+on: [ workflow_dispatch ]
 env:
   XCODE_VERSION: '15.0.1'
   JAVA_VERSION: '17'

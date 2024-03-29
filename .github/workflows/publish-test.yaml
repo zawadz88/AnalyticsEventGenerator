@@ -1,0 +1,17 @@
+name: PublishTest
+
+on:
+  workflow_dispatch:
+    inputs:
+      new-version:
+        required: true
+        description: New plugin version e.g. 1.0
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1

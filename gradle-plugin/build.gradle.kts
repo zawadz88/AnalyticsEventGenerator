@@ -40,15 +40,12 @@ tasks.test {
     }
 }
 
-val githubRepository: String? by project
-githubRepository?.let {
-    publishing {
-        repositories {
-            maven {
-                name = "github"
-                url = uri("https://maven.pkg.github.com/$it")
-                credentials(PasswordCredentials::class)
-            }
+publishing {
+    repositories {
+        maven {
+            name = "github"
+            url = uri("https://maven.pkg.github.com/zawadz88/AnalyticsEventGenerator")
+            credentials(PasswordCredentials::class)
         }
     }
 }

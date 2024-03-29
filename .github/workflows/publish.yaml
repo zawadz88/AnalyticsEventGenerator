@@ -15,7 +15,7 @@ permissions:
   packages: write
 
 jobs:
-  build:
+  publish:
     runs-on: macOS-13
     steps:
       - name: checkout

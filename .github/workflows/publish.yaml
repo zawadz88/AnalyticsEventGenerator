@@ -10,6 +10,10 @@ env:
   XCODE_VERSION: '15.0.1'
   JAVA_VERSION: '17'
 
+permissions:
+  contents: write
+  packages: write
+
 jobs:
   build:
     runs-on: macOS-13
@@ -52,6 +56,15 @@ jobs:
           git add gradle/libs.versions.toml
           git commit -m "[CI] Version bump to ${{ github.event.inputs.new-version }}"
           git tag ${{ github.event.inputs.new-version }}
+      - name: Set Github credentials
+        run: |
+          cat << EOF >> gradle.properties
+          githubUsername=$GITHUB_USERNAME
+          githubPassword=$GITHUB_TOKEN
+          EOF
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_USERNAME: ${{ github.actor }}
       - name: Build Plugin & Runtime
         run: |
           ./gradlew -version --no-daemon

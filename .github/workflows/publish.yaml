@@ -42,20 +42,23 @@ jobs:
       - name: Update library version name
         uses: MathieuSoysal/replace-string-in-file@v1.1.0
         with:
+          without-checkout: true
           file: gradle/libs.versions.toml
           old-string: 'library = ".*"'
-          new-string: 'library = "{{ github.event.inputs.new-version }}"'
+          new-string: 'library = "${{ inputs.new-version }}"'
       - name: Update version name in sample app
         uses: MathieuSoysal/replace-string-in-file@v1.1.0
         with:
+          without-checkout: true
           file: samples/SampleKMPApplication/gradle/libs.versions.toml
           old-string: 'eventPlugin = ".*"'
-          new-string: 'eventPlugin = "{{ github.event.inputs.new-version }}"'
+          new-string: 'eventPlugin = "${{ inputs.new-version }}"'
       - name: Git commit, tag
         run: |
           git add gradle/libs.versions.toml
-          git commit -m "[CI] Version bump to ${{ github.event.inputs.new-version }}"
-          git tag ${{ github.event.inputs.new-version }}
+          git add samples/SampleKMPApplication/gradle/libs.versions.toml
+          git commit -m "[CI] Version bump to ${{ inputs.new-version }}"
+          git tag ${{ inputs.new-version }}
       - name: Set Github credentials
         run: |
           cat << EOF >> gradle.properties
@@ -86,3 +89,37 @@ jobs:
           GRADLE_OPTS: -Dkotlin.incremental=false -Dorg.gradle.jvmargs="-Xmx3g -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8 -XX:MaxMetaspaceSize=512m"
       - name: Git push
         run: git push
+  update-samples:
+    needs: publish
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Trigger library updates in each repo
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.PAT_GITHUB }}
+          script: |
+            try {
+              const fs = require('fs');
+              const jsonString = fs.readFileSync('./.github/workflows/sample-projects.json');
+              const sampleProjects = JSON.parse(jsonString);
+              console.log(sampleProjects);
+              sampleProjects.forEach((sampleProject) => {
+                console.log('Triggering update for: ' + sampleProject.repo);
+                github.rest.actions.createWorkflowDispatch({
+                  owner: sampleProject.owner,
+                  repo: sampleProject.repo,
+                  workflow_id: 'update-generator-version.yaml',
+                  ref: sampleProject.default_branch,
+                  inputs: {
+                    'new-version': "${{ inputs.new-version }}"
+                  },
+                });
+              });
+            } catch(err) {
+              core.error("Error while reading or parsing the JSON");
+              core.setFailed(err);
+            }

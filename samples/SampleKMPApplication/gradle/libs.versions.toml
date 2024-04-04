@@ -1,6 +1,6 @@
 [versions]
 agp = "8.2.0"
-eventPlugin = "0.1"
+eventPlugin = "0.1.1"
 kotlin = "1.9.22"
 kotlinCoroutines = "1.8.0"
 kotlinDateTime = "0.5.0"

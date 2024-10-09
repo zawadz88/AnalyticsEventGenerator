@@ -21,9 +21,6 @@ And then consume in separate Android, iOS and Web JS projects:
 - [Web app](https://github.com/zawadz88/AnalyticsEventGeneratorSample-ReactApp) using Yarn, Webpack & react JS
 
 # TODOs
-
 - add Getting Started and setup
-- publish action for plugin with Github Actions
-- Github Actions for sample projects
-- add ktlint & detekt
-- make Github repo public
+- add info how to use with Github packages distribution 
+- publish library to Maven Central https://medium.com/kodein-koders/publish-a-kotlin-multiplatform-library-on-maven-central-6e8a394b7030
